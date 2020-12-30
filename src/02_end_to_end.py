@@ -87,7 +87,9 @@ def main():
         colorbar=False,
         alpha=0.4,
     )
-    plt.imshow(california_img, extent=[-124.55, -113.80, 32.45, 42.05], alpha=0.5, cmap=plt.get_cmap("jet"))
+    plt.imshow(
+        california_img, extent=[-124.55, -113.80, 32.45, 42.05], alpha=0.5, cmap=plt.get_cmap("jet")
+    )
     plt.ylabel("Latitude", fontsize=14)
     plt.xlabel("Longitude", fontsize=14)
 
@@ -186,7 +188,9 @@ def main():
     tree_reg = DecisionTreeRegressor(random_state=42)
     tree_reg.fit(housing_prepared, housing_labels)
     housing_predictions = tree_reg.predict(housing_prepared)
-    scores = cross_val_score(tree_reg, housing_prepared, housing_labels, scoring="neg_mean_squared_error", cv=10)
+    scores = cross_val_score(
+        tree_reg, housing_prepared, housing_labels, scoring="neg_mean_squared_error", cv=10
+    )
     tree_rmse_scores = np.sqrt(-scores)
     display_scores(tree_rmse_scores)
 
