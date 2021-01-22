@@ -147,8 +147,6 @@ X, y = make_moons(n_samples=100, noise=0.15, random_state=42)
 plot_dataset(X, y, [-1.5, 2.5, -1, 1.5])
 plt.show()
 
-from sklearn.datasets import make_moons
-from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures
 
 polynomial_svm_clf = Pipeline(
@@ -181,9 +179,7 @@ plot_predictions(polynomial_svm_clf, [-1.5, 2.5, -1, 1.5])
 plot_dataset(X, y, [-1.5, 2.5, -1, 1.5])
 plt.show()
 
-poly_kernel_svm_clf = Pipeline(
-    [("scaler", StandardScaler()), ("svm_clf", SVC(kernel="poly", degree=3, coef0=1, C=5))]
-)
+poly_kernel_svm_clf = Pipeline([("scaler", StandardScaler()), ("svm_clf", SVC(kernel="poly", degree=3, coef0=1, C=5))])
 poly_kernel_svm_clf.fit(X, y)
 
 poly100_kernel_svm_clf = Pipeline(
