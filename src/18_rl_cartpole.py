@@ -378,7 +378,7 @@ def deep_q_network(seed=42):
     rewards = []
     best_score = 0
     best_weights = 0
-    for episode in range(600):
+    for episode in range(10):
         obs = env.reset()
         step, epsilon = 0, 0
         for step in range(200):
@@ -415,6 +415,7 @@ def deep_q_network(seed=42):
             break
         img = env.render(mode="rgb_array")
         frames.append(img)
+    env.close()
 
     Writer = animation.writers["ffmpeg"]
     writer = Writer(fps=30, metadata=dict(artist="mecha2k"), bitrate=1800)

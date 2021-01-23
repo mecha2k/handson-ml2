@@ -4,6 +4,16 @@ import matplotlib.animation as animation
 import tensorflow as tf
 
 from tf_agents.environments import suite_gym
+from tf_agents.environments.wrappers import ActionRepeat
+from tf_agents.environments import suite_atari
+from tf_agents.environments.atari_preprocessing import AtariPreprocessing
+from tf_agents.environments.atari_wrappers import FrameStack4
+from tf_agents.environments.tf_py_environment import TFPyEnvironment
+from tf_agents.networks.q_network import QNetwork
+from tf_agents.agents.dqn.dqn_agent import DqnAgent
+
+import tf_agents.environments.wrappers
+
 from tensorflow.keras import models
 from tensorflow.keras import layers
 from tensorflow.keras import optimizers
@@ -11,14 +21,15 @@ from collections import deque
 from icecream import ic
 
 
-def main():
-    seed = 42
+def tf_agents_basic(seed=42):
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+
     env = suite_gym.load("Breakout-v4")
     env.seed(seed)
-    env.reset()
+    print(env.reset())
 
     img = env.render(mode="rgb_array")
-
     plt.figure(figsize=(6, 8))
     plt.imshow(img)
     plt.axis("off")
@@ -26,12 +37,13 @@ def main():
     plt.savefig("./images/breakout_plot.png", format="png", dpi=300)
     plt.show()
 
-    from tf_agents.environments.wrappers import ActionRepeat
+
+def breakout_v4(seed=42):
+    env = suite_gym.load("Breakout-v4")
+    env.seed(seed)
+    env.reset()
 
     repeating_env = ActionRepeat(env, times=4)
-
-    import tf_agents.environments.wrappers
-
     for name in dir(tf_agents.environments.wrappers):
         obj = getattr(tf_agents.environments.wrappers, name)
         if hasattr(obj, "__base__") and issubclass(
@@ -39,18 +51,11 @@ def main():
         ):
             print("{:27s} {}".format(name, obj.__doc__.split("\n")[0]))
 
-    from functools import partial
-    from gym.wrappers import TimeLimit
-
     limited_repeating_env = suite_gym.load(
         "Breakout-v4",
         gym_env_wrappers=[partial(TimeLimit, max_episode_steps=10000)],
         env_wrappers=[partial(ActionRepeat, times=4)],
     )
-
-    from tf_agents.environments import suite_atari
-    from tf_agents.environments.atari_preprocessing import AtariPreprocessing
-    from tf_agents.environments.atari_wrappers import FrameStack4
 
     max_episode_steps = 27000  # <=> 108k ALE frames since 1 step = 4 frames
     environment_name = "BreakoutNoFrameskip-v4"
@@ -87,11 +92,7 @@ def main():
     plt.savefig("./images/preprocessed_breakout_plot.png", format="png", dpi=300)
     plt.show()
 
-    from tf_agents.environments.tf_py_environment import TFPyEnvironment
-
     tf_env = TFPyEnvironment(env)
-
-    from tf_agents.networks.q_network import QNetwork
 
     preprocessing_layer = keras.layers.Lambda(lambda obs: tf.cast(obs, np.float32) / 255.0)
     conv_layer_params = [(32, (8, 8), 4), (64, (4, 4), 2), (64, (3, 3), 1)]
@@ -104,8 +105,6 @@ def main():
         conv_layer_params=conv_layer_params,
         fc_layer_params=fc_layer_params,
     )
-
-    from tf_agents.agents.dqn.dqn_agent import DqnAgent
 
     # see TF-agents issue #113
     # optimizer = keras.optimizers.RMSprop(lr=2.5e-4, rho=0.95, momentum=0.0,
@@ -187,6 +186,11 @@ def main():
         num_steps=20000,
     )  # <=> 80,000 ALE frames
     final_time_step, final_policy_state = init_driver.run()
+
+
+def main():
+    tf_agents_basic(42)
+    # breakout_v4(42)
 
 
 if __name__ == "__main__":
