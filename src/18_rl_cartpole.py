@@ -424,13 +424,13 @@ def deep_q_network(seed=42):
 
 
 def main():
-    seed = 100
+    seed = 42
     # basic_policy(seed)
     # render_policy(seed)
-    # policy_gradients(seed)
+    policy_gradients(seed)
     # markov_chain(seed)
     # q_value_iter(seed)
-    deep_q_network(seed)
+    # deep_q_network(seed)
 
 
 if __name__ == "__main__":
