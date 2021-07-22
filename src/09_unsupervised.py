@@ -514,6 +514,13 @@ def runGaussianMixture():
     print(gm.covariances_)
     print(gm.converged_)
     print(gm.n_iter_)
+    print(gm.predict(X))
+    score = gm.score_samples(X)
+    print(score)
+
+    x_new, y_new = gm.sample(10)
+    print(x_new)
+    print(y_new)
 
     resolution = 100
     grid = np.arange(-10, 10, 1 / resolution)
