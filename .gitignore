@@ -11,7 +11,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-examples/data
+src/data/large
 agents
 
 .DS_Store

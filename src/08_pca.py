@@ -217,8 +217,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # ax.set_xlim(axes[0:2])
 # ax.set_ylim(axes[2:4])
 # ax.set_zlim(axes[4:6])
-
-
 # plt.savefig(
 #     "images/08_manifold_decision_boundary_plot1.png", format="png", dpi=300, bboxinches="tight"
 # )
@@ -232,8 +230,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # plt.xlabel("$z_1$", fontsize=18)
 # plt.ylabel("$z_2$", fontsize=18, rotation=0)
 # plt.grid(True)
-
-
 # plt.savefig(
 #     "images/08_manifold_decision_boundary_plot2.png", format="png", dpi=300, bboxinches="tight"
 # )
@@ -253,8 +249,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # ax.set_xlim(axes[0:2])
 # ax.set_ylim(axes[2:4])
 # ax.set_zlim(axes[4:6])
-
-
 # plt.savefig(
 #     "images/08_manifold_decision_boundary_plot3.png", format="png", dpi=300, bboxinches="tight"
 # )
@@ -269,8 +263,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # plt.xlabel("$z_1$", fontsize=18)
 # plt.ylabel("$z_2$", fontsize=18, rotation=0)
 # plt.grid(True)
-
-
 # plt.savefig(
 #     "images/08_manifold_decision_boundary_plot4.png", format="png", dpi=300, bboxinches="tight"
 # )
@@ -354,11 +346,17 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # plt.grid(True)
 # plt.savefig("images/08_pca_best_projection_plot.png", format="png", dpi=300, bboxinches="tight")
 
-mnist = fetch_openml("mnist_784", version=1)
-mnist.target = mnist.target.astype(np.uint8)
+# mnist = fetch_openml("mnist_784", version=1)
+# mnist.target = mnist.target.astype(np.uint8)
+#
+# X = mnist["data"]
+# y = mnist["target"]
+#
+# np.save("data/large/mnist_data", X)
+# np.save("data/large/mnist_target", y)
 
-X = mnist["data"]
-y = mnist["target"]
+X = np.load("data/large/mnist_data.npy")
+y = np.load("data/large/mnist_target.npy")
 
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
@@ -385,39 +383,39 @@ X_train, X_test, y_train, y_test = train_test_split(X, y)
 # X_reduced = pca.fit_transform(X_train)
 # print(pca.n_components_)
 # print(np.sum(pca.explained_variance_ratio_))
-
-pca = PCA(n_components=154)
-X_reduced = pca.fit_transform(X_train)
-X_recovered = pca.inverse_transform(X_reduced)
-print(X_reduced.shape)
-print(X_recovered.shape)
-print(X_train[::2100])
-
-
-def plot_digits(instances, images_per_row=5, **options):
-    size = 28
-    images_per_row = min(len(instances), images_per_row)
-    images = [instance.reshape(size, size) for instance in instances]
-    n_rows = (len(instances) - 1) // images_per_row + 1
-    row_images = []
-    n_empty = n_rows * images_per_row - len(instances)
-    images.append(np.zeros((size, size * n_empty)))
-    for row in range(n_rows):
-        rimages = images[row * images_per_row : (row + 1) * images_per_row]
-        row_images.append(np.concatenate(rimages, axis=1))
-    image = np.concatenate(row_images, axis=0)
-    plt.imshow(image, cmap=mpl.cm.binary, **options)
-    plt.axis("off")
-
-
-plt.figure(figsize=(10, 6))
-plt.subplot(121)
-plot_digits(X_train[::2100])
-plt.title("Original", fontsize=16)
-plt.subplot(122)
-plot_digits(X_recovered[::2100])
-plt.title("Compressed", fontsize=16)
-plt.savefig("images/08_mnist_compression_plot.png", format="png", dpi=300, bboxinches="tight")
+#
+# pca = PCA(n_components=154)
+# X_reduced = pca.fit_transform(X_train)
+# X_recovered = pca.inverse_transform(X_reduced)
+# print(X_reduced.shape)
+# print(X_recovered.shape)
+# print(X_train[::2100])
+#
+#
+# def plot_digits(instances, images_per_row=5, **options):
+#     size = 28
+#     images_per_row = min(len(instances), images_per_row)
+#     images = [instance.reshape(size, size) for instance in instances]
+#     n_rows = (len(instances) - 1) // images_per_row + 1
+#     row_images = []
+#     n_empty = n_rows * images_per_row - len(instances)
+#     images.append(np.zeros((size, size * n_empty)))
+#     for row in range(n_rows):
+#         rimages = images[row * images_per_row : (row + 1) * images_per_row]
+#         row_images.append(np.concatenate(rimages, axis=1))
+#     image = np.concatenate(row_images, axis=0)
+#     plt.imshow(image, cmap=mpl.cm.binary, **options)
+#     plt.axis("off")
+#
+#
+# plt.figure(figsize=(10, 6))
+# plt.subplot(121)
+# plot_digits(X_train[::2100])
+# plt.title("Original", fontsize=16)
+# plt.subplot(122)
+# plot_digits(X_recovered[::2100])
+# plt.title("Compressed", fontsize=16)
+# plt.savefig("images/08_mnist_compression_plot.png", format="png", dpi=300, bboxinches="tight")
 
 # X_reduced_pca = X_reduced
 
@@ -607,9 +605,9 @@ plt.savefig("images/08_mnist_compression_plot.png", format="png", dpi=300, bboxi
 # plt.grid(True)
 # plt.savefig("images/08_lle_unrolling_plot.png", format="png", dpi=300, bboxinches="tight")
 
-
-# mds = MDS(n_components=2, random_state=42)
-# X_reduced_mds = mds.fit_transform(X)
+print("MDS started...")
+mds = MDS(n_components=2, random_state=42, verbose=1)
+X_reduced_mds = mds.fit_transform(X)
 
 # isomap = Isomap(n_components=2)
 # X_reduced_isomap = isomap.fit_transform(X)
