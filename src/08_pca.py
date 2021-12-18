@@ -56,11 +56,11 @@ X2D = pca.fit_transform(X)
 ic(X2D[:5])
 ic(X2D_using_svd[:5])
 
-np.allclose(X2D, -X2D_using_svd)
+ic(np.allclose(X2D, -X2D_using_svd))
 X3D_inv = pca.inverse_transform(X2D)
-np.mean(np.sum(np.square(X3D_inv - X), axis=1))
+ic(np.mean(np.sum(np.square(X3D_inv - X), axis=1)))
 X3D_inv_using_svd = X2D_using_svd.dot(Vt[:2, :])
-np.allclose(X3D_inv_using_svd, X3D_inv - pca.mean_)
+ic(np.allclose(X3D_inv_using_svd, X3D_inv - pca.mean_))
 ic(pca.components_)
 ic(pca.explained_variance_ratio_)
 ic(1 - pca.explained_variance_ratio_.sum())
@@ -473,6 +473,7 @@ for n_samples in sizes:
     t2 = time.time()
     times_pca.append(t2 - t1)
 
+plt.figure(figsize=(10, 6))
 plt.plot(sizes, times_rpca, "b-o", label="RPCA")
 plt.plot(sizes, times_pca, "r-s", label="PCA")
 plt.xlabel("n_samples")
@@ -497,6 +498,7 @@ for n_features in sizes:
     t2 = time.time()
     times_pca.append(t2 - t1)
 
+plt.figure(figsize=(10, 6))
 plt.plot(sizes, times_rpca, "b-o", label="RPCA")
 plt.plot(sizes, times_pca, "r-s", label="PCA")
 plt.xlabel("n_features")
@@ -606,7 +608,7 @@ tsne = TSNE(n_components=2, random_state=42)
 X_reduced_tsne = tsne.fit_transform(X)
 
 titles = ["MDS", "Isomap", "t-SNE"]
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 5))
 for subplot, title, X_reduced in zip(
     (131, 132, 133), titles, (X_reduced_mds, X_reduced_isomap, X_reduced_tsne)
 ):
