@@ -199,7 +199,7 @@ def runGaussianMixture():
     plt.figure(figsize=(8, 4))
     plot_gaussian_mixture(gm, X)
     plt.tight_layout()
-    plt.savefig("images/08_gaussian_mixtures.png", format="png", dpi=300)
+    plt.savefig("images/ch08/08_gaussian_mixtures.png", format="png", dpi=300)
 
     gm_full = GaussianMixture(n_components=3, n_init=10, covariance_type="full", random_state=42)
     gm_tied = GaussianMixture(n_components=3, n_init=10, covariance_type="tied", random_state=42)
@@ -212,11 +212,11 @@ def runGaussianMixture():
 
     compare_gaussian_mixtures(gm_tied, gm_spherical, X)
     plt.tight_layout()
-    plt.savefig("images/08_covariance_type_plot_01.png", format="png", dpi=300)
+    plt.savefig("images/ch08/08_covariance_type_plot_01.png", format="png", dpi=300)
 
     compare_gaussian_mixtures(gm_full, gm_diag, X)
     plt.tight_layout()
-    plt.savefig("images/08_covariance_type_plot_02.png", format="png", dpi=300)
+    plt.savefig("images/ch08/08_covariance_type_plot_02.png", format="png", dpi=300)
 
     densities = gm.score_samples(X)
     density_threshold = np.percentile(densities, 4)
@@ -226,7 +226,7 @@ def runGaussianMixture():
     plot_gaussian_mixture(gm, X)
     plt.scatter(anomalies[:, 0], anomalies[:, 1], color="r", marker="*")
     plt.ylim(top=5.1)
-    plt.savefig("images/08_mixture_anomaly_detection_plot.png", format="png", dpi=300)
+    plt.savefig("images/ch08/08_mixture_anomaly_detection_plot.png", format="png", dpi=300)
 
     gms_per_k = [GaussianMixture(n_components=k, n_init=10, random_state=42).fit(X) for k in range(1, 11)]
 
@@ -248,7 +248,7 @@ def runGaussianMixture():
         arrowprops=dict(facecolor="black", shrink=0.1),
     )
     plt.legend()
-    plt.savefig("images/08_aic_bic_vs_k_plot.png", format="png", dpi=300)
+    plt.savefig("images/ch08/08_aic_bic_vs_k_plot.png", format="png", dpi=300)
 
     min_bic = np.infty
     best_k, best_covariance_type = None, None
@@ -281,7 +281,7 @@ def runVariationalBayesianGaussian():
 
     plt.figure(figsize=(8, 5))
     plot_gaussian_mixture(bgm, X)
-    plt.savefig("images/08_gaussian_mixture_01.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_gaussian_mixture_01.png", dpi=300, bboxinches="tight")
     
     bgm_low = BayesianGaussianMixture(
         n_components=10, max_iter=1000, n_init=1, weight_concentration_prior=0.01, random_state=42
@@ -303,7 +303,7 @@ def runVariationalBayesianGaussian():
     plt.subplot(122)
     plot_gaussian_mixture(bgm_high, X[:nn], show_ylabels=False)
     plt.title("weight_concentration_prior = 10000", fontsize=14)
-    plt.savefig("images/08_gaussian_mixture_02.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_gaussian_mixture_02.png", dpi=300, bboxinches="tight")
 
 
 def runGaussianMixture_iris():
@@ -321,13 +321,14 @@ def runGaussianMixture_iris():
     print(X[y_pred == 0, 2])
     print(f"accuracy : {np.sum(y_pred==y) / len(y_pred) * 100.0:.1f}%")
 
+    plt.figure(figsize=(8, 4))
     plt.plot(X[y_pred == 0, 2], X[y_pred == 0, 3], "yo", label="Cluster 1")
     plt.plot(X[y_pred == 1, 2], X[y_pred == 1, 3], "bs", label="Cluster 2")
     plt.plot(X[y_pred == 2, 2], X[y_pred == 2, 3], "g^", label="Cluster 3")
     plt.xlabel("Petal length", fontsize=14)
     plt.ylabel("Petal width", fontsize=14)
     plt.legend(loc="upper left", fontsize=12)
-    plt.savefig("images/08_gaussian_mixture_iris.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_gaussian_mixture_iris.png", dpi=300, bboxinches="tight")
 
 
 def runKMeans_blobs():
@@ -339,7 +340,7 @@ def runKMeans_blobs():
     plt.scatter(X[:, 0], X[:, 1], c=y, s=1)
     plt.xlabel("$x_1$", fontsize=14)
     plt.ylabel("$x_2$", fontsize=14, rotation=0)
-    plt.savefig("images/08_kmeans_blob.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_blob.png", dpi=300, bboxinches="tight")
 
     kmeans = KMeans(n_clusters=5, random_state=42)
     y_pred = kmeans.fit_predict(X)
@@ -348,8 +349,7 @@ def runKMeans_blobs():
 
     plt.figure(figsize=(8, 4))
     plot_decision_boundaries(kmeans, X)
-    plt.tight_layout()
-    plt.savefig("images/08_voronoi.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_voronoi.png", dpi=300, bboxinches="tight")
 
     X_new = np.array([[0, 2], [3, 2], [-3, 3], [-3, 2.5]])
     print(kmeans.predict(X_new))
@@ -383,7 +383,7 @@ def runKMeans_blobs():
     plot_centroids(kmeans_iter3.cluster_centers_)
     plt.subplot(326)
     plot_decision_boundaries(kmeans_iter3, X, show_ylabels=False)
-    plt.savefig("images/08_kmeans_algorithm.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_algorithm.png", dpi=300, bboxinches="tight")
 
     kmeans_rnd_init1 = KMeans(n_clusters=5, init="random", n_init=1, algorithm="full", random_state=11)
     kmeans_rnd_init2 = KMeans(n_clusters=5, init="random", n_init=1, algorithm="full", random_state=19)
@@ -391,7 +391,7 @@ def runKMeans_blobs():
     plot_clusterer_comparison(
         kmeans_rnd_init1, kmeans_rnd_init2, X, "Solution 1", "Solution 2 (with a different random init)"
     )
-    plt.savefig("images/08_kmeans_cluster_comparison.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_cluster_comparison.png", dpi=300, bboxinches="tight")
 
     minibatch_kmeans = MiniBatchKMeans(n_clusters=5, random_state=42)
     minibatch_kmeans.fit(X)
@@ -411,7 +411,7 @@ def runKMeans_blobs():
         arrowprops=dict(facecolor="black", shrink=0.1),
     )
     plt.axis([1, 8.5, 0, 1300])
-    plt.savefig("images/08_kmeans_sse_diagram.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_sse_diagram.png", dpi=300, bboxinches="tight")
 
     silhouette_scores = [silhouette_score(X, model.labels_) for model in kmeans_per_k[1:]]
 
@@ -420,7 +420,7 @@ def runKMeans_blobs():
     plt.xlabel("$k$", fontsize=14)
     plt.ylabel("Silhouette score", fontsize=14)
     plt.axis([1.8, 8.5, 0.55, 0.7])
-    plt.savefig("images/08_kmeans_silhouette.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_silhouette.png", dpi=300, bboxinches="tight")
 
     plt.figure(figsize=(11, 9))
     for k in (3, 4, 5, 6):
@@ -456,15 +456,15 @@ def runKMeans_blobs():
             plt.tick_params(labelbottom=False)
         plt.axvline(x=silhouette_scores[k - 2], color="red", linestyle="--")
         plt.title("$k={}$".format(k), fontsize=16)
-    plt.savefig("images/08_kmeans_silhouette_coeff.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_kmeans_silhouette_coeff.png", dpi=300, bboxinches="tight")
 
 
 def runImgSeg():
-    os.makedirs("images/unsupervised", exist_ok=True)
+    os.makedirs("images/ch08/unsupervised", exist_ok=True)
     url = "https://github.com/ageron/handson-ml2/blob/master/images/unsupervised_learning/ladybug.png"
     # urllib.request.urlretrieve(url, "images/unsupervised/ladybug.png")
 
-    image = imread("images/unsupervised/ladybug.png")
+    image = imread("images/ch08/unsupervised/ladybug.png")
     print(image.shape)
 
     X = image.reshape(-1, 3)
@@ -487,7 +487,7 @@ def runImgSeg():
         plt.title("{} colors".format(n_clusters))
         plt.axis("off")
     plt.tight_layout()
-    plt.savefig("images/08_image_seg_diagram.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_image_seg_diagram.png", dpi=300, bboxinches="tight")
 
 
 def runKMeans_digits():
@@ -532,7 +532,7 @@ def runKMeans_digits():
         plt.subplot(k // 10, 10, index + 1)
         plt.imshow(X_representative_digit.reshape(8, 8), cmap="binary", interpolation="bilinear")
         plt.axis("off")
-    plt.savefig("images/08_KMeans_digits.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_KMeans_digits.png", dpi=300, bboxinches="tight")
 
     # fmt: off
     y_representative_digits = np.array([
@@ -587,7 +587,7 @@ def runDBSCAN():
     plot_dbscan(dbscan, X, size=100)
     plt.subplot(122)
     plot_dbscan(dbscan2, X, size=600, show_ylabels=False)
-    plt.savefig("images/08_dbscan.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_dbscan.png", dpi=300, bboxinches="tight")
 
     dbscan = dbscan2
     knn = KNeighborsClassifier(n_neighbors=50)
@@ -600,14 +600,14 @@ def runDBSCAN():
     plt.figure(figsize=(6, 3))
     plot_decision_boundaries(knn, X, show_centroids=False)
     plt.scatter(X_new[:, 0], X_new[:, 1], c="b", marker="+", s=200, zorder=10)
-    plt.savefig("images/08_dbscan_knn.png", dpi=300, bboxinches="tight")
+    plt.savefig("images/ch08/08_dbscan_knn.png", dpi=300, bboxinches="tight")
 
 
 if __name__ == "__main__":
     runKMeans_blobs()
     runGaussianMixture_iris()
-    runImgSeg()
-    runKMeans_digits()
-    runDBSCAN()
-    runGaussianMixture()
-    runVariationalBayesianGaussian()
+    # runImgSeg()
+    # runKMeans_digits()
+    # runDBSCAN()
+    # runGaussianMixture()
+    # runVariationalBayesianGaussian()
